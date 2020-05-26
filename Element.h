@@ -23,6 +23,7 @@ private:
     static const std::vector<std::string>& getInteractionElementsByLabel(const std::string& _label);
     static bool canBaseInteractWith(const Element* base, const Element* other);
     static bool canCreatedInteractWith(const Element* created, const Element* other);
+    static std::vector<std::string> getInteractionElementsForElement(const Element* element);
 
 public:
     Element(const std::string& _label, const std::vector<std::string>& _createdByLabels) : label(_label), createdByLabels(_createdByLabels) {}
@@ -101,10 +102,10 @@ public:
     }
 };
 
-class Rock : public Element
+class Stone : public Element
 {
 public:
-    Rock() : Element("Rock", {"Fire", "Water"}) {}
+    Stone() : Element("Stone", {"Fire", "Water"}) {}
 
     virtual bool isBase() const override
     {
@@ -138,6 +139,17 @@ class Gold : public Element
 {
 public:
     Gold() : Element("Gold", {"Metal"}) {}
+
+    virtual bool isBase() const override
+    {
+        return false;
+    }
+};
+
+class PhilosopherStone : public Element
+{
+public:
+    PhilosopherStone() : Element("Philosopher's Stone", {"Earth", "Fire", "Water", "Air"}) {}
 
     virtual bool isBase() const override
     {

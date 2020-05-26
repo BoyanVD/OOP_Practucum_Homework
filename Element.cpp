@@ -22,16 +22,36 @@ Element* ElementFactory::generate(std::string label)
         return new Fire();
     else if (label == "Metal")
         return new Metal();
-    else if (label == "Rock")
-        return new Rock();
+    else if (label == "Stone")
+        return new Stone();
     else if (label == "Energy")
         return new Energy();
     else if (label == "Spirit")
         return new Spirit();
     else if (label == "Gold")
         return new Gold();
+    else if (label == "Philosopher's Stone")
+        return new PhilosopherStone();
 
     return nullptr;
+}
+
+std::vector<std::string> Element::getInteractionElementsForElement(const Element* element)
+{
+    if (element->isBase())
+        return getInteractionElementsByLabel(element->getLabel());
+    
+    std::vector<std::string> elements;
+    std::vector<std::string> createdByElements = element->getCreatedByLabels();
+
+    for (std::string label : createdByElements)
+    {
+        Element* element = ElementFactory::generate(label);
+        std::vector<std::string> parentInteractionElements = Element::getInteractionElementsForElement(element);
+        elements.insert(elements.end(), parentInteractionElements.begin(), parentInteractionElements.end());
+    }
+
+    return elements;
 }
 
 const std::vector<std::string>& Element::getInteractionElementsByLabel(const std::string& _label)
@@ -70,7 +90,9 @@ bool Element::canBaseInteractWith(const Element* base, const Element* other)
     for (std::string label : labels)
     {
         Element* element = ElementFactory::generate(label);
-        if (!(base->canInteractWith(element)))
+        // if (!(base->canInteractWith(element)))
+        //     return false;
+        if (!(Element::canBaseInteractWith(base, element)))
             return false;
     }
 
@@ -79,14 +101,22 @@ bool Element::canBaseInteractWith(const Element* base, const Element* other)
 
 bool Element::canCreatedInteractWith(const Element* created, const Element* other)
 {
+    // if (other->isBase())
+    //     return Element::canBaseInteractWith(other, created);
+
     if (other->isBase())
-        return Element::canBaseInteractWith(other, created);
+    {
+        std::vector<std::string> interactionElements = Element::getInteractionElementsForElement(created);
+        return contains(interactionElements, other->getLabel());
+    }
 
     std::vector<std::string> labels = other->getCreatedByLabels();
     for (std::string label : labels)
     {
         Element* element = ElementFactory::generate(label);
-        if (!(element->canInteractWith(created)))
+        // if (!(element->canInteractWith(created)))
+        //     return false;
+        if (!(Element::canCreatedInteractWith(created, element)))
             return false;
     }
 

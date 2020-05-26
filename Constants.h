@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 
-// std::vector<std::string> BASE_ELEMENTS = {"Earth", "Fire", "Water", "Air"}; 
+const std::string EQUATION_RESULT_ELEMENT_DELIMETER = " = "; // Space-Equals-Space expected
+const std::string EQUATION_INTERACTION_ELEMENTS_DELIMETER = " + "; // Space-Plus-Space expected
 
 #endif
