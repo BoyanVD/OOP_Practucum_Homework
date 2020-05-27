@@ -95,7 +95,6 @@ void Formula::print() const
 
 Element* Formula::getResult() const
 {
-    // return ElementFactory::generate(this->result->getLabel());
     return this->result;
 }
 

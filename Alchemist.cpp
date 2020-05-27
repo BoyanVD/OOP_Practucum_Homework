@@ -24,13 +24,13 @@ Alchemist::~Alchemist()
     delete this->book;
 }
 
-bool Alchemist::useElement(const Element* element, std::vector<std::pair<Element*, int>>& resources)
+bool Alchemist::useElement(const Element* element)
 {
-    for (std::pair<Element*, int> elem : resources)
+    for (std::pair<Element*, int>& elem : this->elements)
     {
         if (elem.first->getLabel() == element->getLabel())
         {
-            if (elem.second == 0)
+            if (elem.second <= 0)
                 return false;
             
             --elem.second;
@@ -41,20 +41,14 @@ bool Alchemist::useElement(const Element* element, std::vector<std::pair<Element
     return false;
 }
 
-bool Alchemist::canCreatePhilosopherStone(const Element* root, std::vector<std::pair<Element*, int>> resources)
+bool Alchemist::canCreateElement(const Element* root)
 {
     if (root->isBase())
     {
-        return this->useElement(root, resources);
+        return this->useElement(root);
     }
 
     std::vector<Formula*> possibleFormulas = this->book->getFormulasForResult(root);
-    // bool canCreate = true;
-
-    // for (std::pair<Element*, int> elem : resources)
-    // {
-    //     if (this->canCreatePhilosopherStone())
-    // }
     for (Formula* formula : possibleFormulas)
     {
         std::vector<Element*> childElements = formula->getInteractionElements();
@@ -62,7 +56,7 @@ bool Alchemist::canCreatePhilosopherStone(const Element* root, std::vector<std::
 
         for (Element* element : childElements)
         {
-            if (!this->canCreatePhilosopherStone(element, resources))
+            if (!this->canCreateElement(element))
             {
                 canWeCreateUsingFormula = false;
                 break;
@@ -80,9 +74,9 @@ bool Alchemist::canCreatePhilosopherStone(const Element* root, std::vector<std::
     return false;
 }
 
-bool Alchemist::canWeCreate()
-{
-    this->success = this->canCreatePhilosopherStone(new PhilosopherStone(), this->elements);
+bool Alchemist::canWeCreatePS()
+{   
+    this->success = this->canCreateElement(new PhilosopherStone());
     return this->success;
 }
 
@@ -104,10 +98,5 @@ void Alchemist::printInfo() const
     }
 
     std::cout << std::endl;
-
-    // for (std::pair<Element*, int> elem : this->elements)
-    // {
-    //     std::cout << elem.first->getLabel() << " : " << elem.second << std::endl;
-    // }
 }
 #endif

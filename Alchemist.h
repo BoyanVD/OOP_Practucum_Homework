@@ -18,13 +18,13 @@ private:
     std::vector<Formula*> path;
     bool success;
 
-    bool useElement(const Element* element, std::vector<std::pair<Element*, int>>& resources); //returns false if not enough quantity
-    bool canCreatePhilosopherStone(const Element* root, std::vector<std::pair<Element*, int>> resources);
+    bool useElement(const Element* element); //returns false if not enough quantity
+    bool canCreateElement(const Element* root);
 public:
     Alchemist(std::string name, int earthQuantity, int fireQuantity, int waterQuantity, int airQuantity, const std::vector<std::string>& equations);
     ~Alchemist();
 
-    bool canWeCreate();
+    bool canWeCreatePS();
     void printInfo() const;
 };
 

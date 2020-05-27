@@ -90,8 +90,6 @@ bool Element::canBaseInteractWith(const Element* base, const Element* other)
     for (std::string label : labels)
     {
         Element* element = ElementFactory::generate(label);
-        // if (!(base->canInteractWith(element)))
-        //     return false;
         if (!(Element::canBaseInteractWith(base, element)))
             return false;
     }
@@ -101,9 +99,6 @@ bool Element::canBaseInteractWith(const Element* base, const Element* other)
 
 bool Element::canCreatedInteractWith(const Element* created, const Element* other)
 {
-    // if (other->isBase())
-    //     return Element::canBaseInteractWith(other, created);
-
     if (other->isBase())
     {
         std::vector<std::string> interactionElements = Element::getInteractionElementsForElement(created);
@@ -114,8 +109,6 @@ bool Element::canCreatedInteractWith(const Element* created, const Element* othe
     for (std::string label : labels)
     {
         Element* element = ElementFactory::generate(label);
-        // if (!(element->canInteractWith(created)))
-        //     return false;
         if (!(Element::canCreatedInteractWith(created, element)))
             return false;
     }

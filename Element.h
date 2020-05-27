@@ -28,7 +28,7 @@ private:
 public:
     Element(const std::string& _label, const std::vector<std::string>& _createdByLabels) : label(_label), createdByLabels(_createdByLabels) {}
 
-    virtual bool canInteractWith(const Element* other) const; // could remove virtual, but i will keep it for extensibility
+    virtual bool canInteractWith(const Element* other) const;
     virtual bool isBase() const = 0;
 
     std::string getLabel() const
